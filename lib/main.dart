@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       title: 'Shulte',
-      home: Scaffold(body: ShulteScreen()),
+      home: SafeArea(child: ShulteScreen()),
     );
   }
 }

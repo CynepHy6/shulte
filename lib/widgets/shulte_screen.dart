@@ -18,19 +18,21 @@ class _ShulteScreenState extends State<ShulteScreen> {
   int size = defaultSize;
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            modesRow(),
-            const Spacer(flex: 1),
-            field,
-            const Spacer(flex: 1),
-          ],
-        ),
-      ],
+    return Scaffold(
+      body: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              modesRow(),
+              const Spacer(flex: 1),
+              field,
+              const Spacer(flex: 1),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
