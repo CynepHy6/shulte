@@ -2,37 +2,61 @@ import 'package:flutter/material.dart';
 
 import 'block.dart';
 
+enum GameState { start, end, repeat }
+
 class Field extends StatefulWidget {
   final int rows;
   final int cols;
   final double blockWidth;
   final double blockHeight;
-  List<int> idxs = [];
+  final double gap;
   double? width;
   double? height;
   final stopwatch = Stopwatch();
   int nextNum = 1;
   double time = 0;
+  GameState? state;
+  List<int> idxs = [];
+  List<Widget> blocks = [];
 
   Field({
     super.key,
     required this.rows,
     required this.cols,
-    this.blockWidth = 40,
-    this.blockHeight = 40,
+    this.blockWidth = 60,
+    this.blockHeight = 60,
+    this.gap = 1,
   }) {
-    stopwatch.reset();
-    stopwatch.start();
-
-    idxs = createIdxs(cols, rows);
+    state = GameState.repeat;
     width = blockWidth * cols + (cols - 1) * blockWidth / 20;
     height = blockHeight * rows + (rows - 1) * blockHeight / 20;
   }
-  final initNextNum = 1;
-  bool isEnd = false;
 
   @override
   _FieldState createState() => _FieldState();
+}
+
+class _FieldState extends State<Field> {
+  @override
+  Widget build(BuildContext context) {
+    startGame();
+
+    return Stack(children: [
+      if (widget.state == GameState.end) endScreen(),
+      if (widget.state == GameState.start) gameScreen(widget.blocks),
+    ]);
+  }
+
+  void startGame() {
+    if (widget.state != GameState.repeat) return;
+    widget.time = 0;
+    widget.nextNum = 1;
+    widget.stopwatch.reset();
+    widget.stopwatch.start();
+    widget.idxs = createIdxs(widget.cols, widget.rows);
+    widget.blocks = generateBlocks();
+    widget.state = GameState.start;
+  }
 
   List<int> createIdxs(int cols, int rows) {
     List<int> idxs = [];
@@ -44,33 +68,35 @@ class Field extends StatefulWidget {
     idxs.shuffle();
     return idxs;
   }
-}
-
-class _FieldState extends State<Field> {
-  @override
-  Widget build(BuildContext context) {
-    List<Widget> blocks = generateBlocks();
-
-    return Stack(children: [
-      if (widget.isEnd) endScreen(),
-      if (!widget.isEnd) gameScreen(blocks),
-    ]);
-  }
 
   Widget endScreen() {
     return Container(
       width: widget.width,
       height: widget.height,
       color: Colors.green.shade100,
-      child: Center(
-        child: Text(
-          '${widget.time}',
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 20,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            '${widget.time}',
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+            ),
           ),
-        ),
+          repeatButton(),
+        ],
       ),
+    );
+  }
+
+  Widget repeatButton() {
+    return IconButton(
+      icon: Icon(Icons.replay_circle_filled_outlined, color: Colors.grey.shade800),
+      onPressed: () => setState(() {
+        widget.state = GameState.repeat;
+        startGame();
+      }),
     );
   }
 
@@ -93,31 +119,12 @@ class _FieldState extends State<Field> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         mainAxisSize: MainAxisSize.max,
         children: [
-          Text('${widget.nextNum}'),
+          Text(
+            '${widget.nextNum}',
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
           Text('${widget.time}'),
         ],
-      ),
-    );
-  }
-
-  Widget blockTap(int idx) {
-    return GestureDetector(
-      onTap: () {
-        if (idx != widget.nextNum) {
-          return;
-        }
-        setState(() {
-          if (idx == widget.cols * widget.rows) {
-            widget.isEnd = true;
-          }
-          widget.nextNum = widget.nextNum + 1;
-          widget.time = (widget.stopwatch.elapsedMilliseconds / 10).round() / 100;
-        });
-      },
-      child: Block(
-        width: widget.blockWidth,
-        height: widget.blockHeight,
-        value: idx,
       ),
     );
   }
@@ -138,6 +145,30 @@ class _FieldState extends State<Field> {
         children: [...line],
       ));
     }
+
     return blocks;
+  }
+
+  Widget blockTap(int idx) {
+    return GestureDetector(
+      onTap: () {
+        if (idx != widget.nextNum) {
+          return;
+        }
+        setState(() {
+          if (idx == widget.cols * widget.rows) {
+            widget.state = GameState.end;
+          }
+          widget.nextNum = widget.nextNum + 1;
+          widget.time = (widget.stopwatch.elapsedMilliseconds / 10).round() / 100;
+        });
+      },
+      child: Block(
+        width: widget.blockWidth,
+        height: widget.blockHeight,
+        value: idx,
+        gap: widget.gap,
+      ),
+    );
   }
 }

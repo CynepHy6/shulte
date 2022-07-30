@@ -19,13 +19,16 @@ class _ShulteScreenState extends State<ShulteScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Shulte'),
+        actions: modes(),
+      ),
       body: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              modesRow(),
               const Spacer(flex: 1),
               field,
               const Spacer(flex: 1),
@@ -36,23 +39,22 @@ class _ShulteScreenState extends State<ShulteScreen> {
     );
   }
 
-  Widget modesRow() {
-    return Row(
-      children: [
-        modeButton(4, Icons.looks_4),
-        modeButton(5, Icons.looks_5),
-        modeButton(6, Icons.looks_6),
-        const SizedBox(width: 20),
-        modeButton(size, Icons.replay_circle_filled_outlined),
-      ],
-    );
+  List<Widget> modes() {
+    return [
+      modeButton(3, Icons.looks_3),
+      modeButton(4, Icons.looks_4),
+      modeButton(5, Icons.looks_5),
+      modeButton(6, Icons.looks_6),
+      const SizedBox(width: 20),
+      modeButton(size, Icons.replay_circle_filled_outlined),
+    ];
   }
 
   mode(int newSize) {}
 
   Widget modeButton(int newSize, IconData iconData) {
     return IconButton(
-      icon: Icon(iconData, color: Colors.grey),
+      icon: Icon(iconData, color: Colors.grey.shade300),
       onPressed: () => setState(() {
         size = newSize;
         field = Field(
