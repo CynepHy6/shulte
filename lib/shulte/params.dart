@@ -44,7 +44,7 @@ class Params {
     indexes = List.generate(cols * rows, (index) => index + 1);
     indexes.shuffle();
     fieldWidth = blockWidth * cols + (cols - 1) * blockMargin;
-    fieldHeight = blockHeight * rows + rows * blockMargin;
+    fieldHeight = blockHeight * (rows + 1) + (rows - 1) * blockMargin;
   }
 
   void end() {
