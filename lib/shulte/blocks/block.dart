@@ -2,15 +2,17 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import 'params.dart';
+import '../params.dart';
 
 class Block extends StatefulWidget {
   final int idx;
   final Params params;
+  Function callback;
   Block({
     Key? key,
     required this.idx,
     required this.params,
+    required this.callback,
   }) : super(key: key);
 
   @override
@@ -34,12 +36,15 @@ class _BlockState extends State<Block> {
       onTapDown: (context) {
         Timer(
           const Duration(milliseconds: 200),
-          () => setState(() {
-            background = Colors.grey.shade200;
-          }),
+          () {
+            if (!mounted) return;
+            setState(() {
+              background = Colors.grey.shade200;
+            });
+          },
         );
+
         setState(() {
-          print('tap block $idx ${params.nextNum}');
           if (idx != params.nextNum) {
             background = Colors.red;
             return;
@@ -49,6 +54,7 @@ class _BlockState extends State<Block> {
             params.end();
           }
           params.next();
+          widget.callback();
         });
       },
       child: AnimatedContainer(

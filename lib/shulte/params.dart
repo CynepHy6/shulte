@@ -56,8 +56,8 @@ class Params {
   bool get isEnd => state == GameState.end;
 
   void next() {
+    if (!isStart) return;
     nextNum++;
     time = (stopwatch.elapsedMilliseconds / 10).round() / 100;
-    print(time);
   }
 }

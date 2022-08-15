@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'block.dart';
-import 'params.dart';
+import '_.dart';
+import '../params.dart';
 
 class Field extends StatefulWidget {
   Params params;
@@ -16,6 +16,8 @@ class Field extends StatefulWidget {
 
 class _FieldState extends State<Field> {
   Params get params => widget.params;
+  double time = 0;
+  int nextNum = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -56,16 +58,24 @@ class _FieldState extends State<Field> {
     return IconButton(
       icon: Icon(Icons.replay_circle_filled_outlined, color: Colors.grey.shade800),
       onPressed: () => setState(() {
+        time = 0;
+        nextNum = 1;
         params.start();
       }),
     );
   }
+
+  successTapCallback() => setState(() {
+        time = params.time;
+        nextNum = params.nextNum;
+      });
 
   Widget gameScreen() {
     final blocks = params.indexes
         .map((idx) => Block(
               idx: idx,
               params: params,
+              callback: successTapCallback,
             ))
         .toList();
     return SizedBox(
@@ -73,30 +83,17 @@ class _FieldState extends State<Field> {
       width: params.fieldWidth,
       child: Column(
         children: [
-          titleRow(),
+          FieldTitle(
+            nextNum: nextNum,
+            time: time,
+            width: params.fieldWidth,
+          ),
           Expanded(
             child: GridView.count(
               crossAxisCount: params.cols,
               children: blocks,
             ),
           ),
-        ],
-      ),
-    );
-  }
-
-  Widget titleRow() {
-    return SizedBox(
-      width: params.fieldWidth,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          Text(
-            '${params.nextNum}',
-            style: const TextStyle(fontWeight: FontWeight.bold),
-          ),
-          Text('${params.time}'),
         ],
       ),
     );
