@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'widgets/shulte_screen.dart';
+import 'shulte/shulte_screen.dart';
 
 void main() {
   runApp(const MyApp());

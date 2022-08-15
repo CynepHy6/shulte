@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'field.dart';
+import 'params.dart';
 
 const defaultSize = 5;
 
@@ -11,11 +12,9 @@ class ShulteScreen extends StatefulWidget {
 }
 
 class _ShulteScreenState extends State<ShulteScreen> {
-  Field field = Field(
-    rows: defaultSize,
-    cols: defaultSize,
-  );
   int size = defaultSize;
+  Params params = Params(rows: defaultSize, cols: defaultSize);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,19 +22,7 @@ class _ShulteScreenState extends State<ShulteScreen> {
         title: const Text('Shulte'),
         actions: modes(),
       ),
-      body: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              const Spacer(flex: 1),
-              field,
-              const Spacer(flex: 1),
-            ],
-          ),
-        ],
-      ),
+      body: Center(child: Field(params: params)),
     );
   }
 
@@ -50,17 +37,12 @@ class _ShulteScreenState extends State<ShulteScreen> {
     ];
   }
 
-  mode(int newSize) {}
-
   Widget modeButton(int newSize, IconData iconData) {
     return IconButton(
       icon: Icon(iconData, color: Colors.grey.shade300),
       onPressed: () => setState(() {
         size = newSize;
-        field = Field(
-          rows: size,
-          cols: size,
-        );
+        params = Params(rows: size, cols: size);
       }),
     );
   }
