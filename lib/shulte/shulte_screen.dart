@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'blocks/_.dart';
+import 'configs/enums.dart';
 import 'params.dart';
 
-const defaultSize = 5;
+const defaultMode = GameMode.debug;
 
 class ShulteScreen extends StatefulWidget {
   const ShulteScreen({Key? key}) : super(key: key);
@@ -12,8 +13,8 @@ class ShulteScreen extends StatefulWidget {
 }
 
 class _ShulteScreenState extends State<ShulteScreen> {
-  int size = defaultSize;
-  Params params = Params(rows: defaultSize, cols: defaultSize);
+  GameMode mode = defaultMode;
+  Params params = Params(mode: defaultMode);
 
   @override
   Widget build(BuildContext context) {
@@ -23,26 +24,34 @@ class _ShulteScreenState extends State<ShulteScreen> {
         actions: modes(),
       ),
       body: Center(child: Field(params: params)),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.white,
+        onPressed: () => setState(() {
+          params = Params(mode: mode);
+        }),
+        child: const Icon(
+          Icons.replay,
+          color: Colors.blue,
+        ),
+      ),
     );
   }
 
   List<Widget> modes() {
     return [
-      modeButton(3, Icons.looks_3),
-      modeButton(4, Icons.looks_4),
-      modeButton(5, Icons.looks_5),
-      modeButton(6, Icons.looks_6),
-      const SizedBox(width: 20),
-      modeButton(size, Icons.replay_circle_filled_outlined),
+      modeButton(GameMode.x3, Icons.looks_3),
+      modeButton(GameMode.x4, Icons.looks_4),
+      modeButton(GameMode.x5, Icons.looks_5),
+      modeButton(GameMode.x6, Icons.looks_6),
     ];
   }
 
-  Widget modeButton(int newSize, IconData iconData) {
+  Widget modeButton(GameMode newMode, IconData iconData) {
     return IconButton(
       icon: Icon(iconData, color: Colors.grey.shade300),
       onPressed: () => setState(() {
-        size = newSize;
-        params = Params(rows: size, cols: size);
+        mode = newMode;
+        params = Params(mode: mode);
       }),
     );
   }

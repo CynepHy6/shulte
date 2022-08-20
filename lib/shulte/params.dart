@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-
-enum GameState { start, end, repeat }
+import 'configs/enums.dart';
+import 'result.dart';
+import 'configs/field_size.dart';
 
 class Params {
-  final int rows;
-  final int cols;
+  Map<GameMode, List<Result>> results = <GameMode, List<Result>>{};
+  final GameMode mode;
   final double blockWidth;
   final double blockHeight;
   final double blockMargin;
@@ -20,8 +21,7 @@ class Params {
   late Stopwatch stopwatch;
 
   Params({
-    required this.rows,
-    required this.cols,
+    required this.mode,
     this.blockWidth = 60,
     this.blockHeight = 60,
     this.blockMargin = 1,
@@ -34,6 +34,11 @@ class Params {
     stopwatch = Stopwatch();
     start();
   }
+  int get cols => FieldSize.sizes[mode]!.cols;
+  int get rows => FieldSize.sizes[mode]!.rows;
+  bool get isStart => state == GameState.start;
+  bool get isRepeat => state == GameState.repeat;
+  bool get isEnd => state == GameState.end;
 
   void start() {
     state = GameState.start;
@@ -49,15 +54,19 @@ class Params {
 
   void end() {
     state = GameState.end;
+    saveResult();
   }
-
-  bool get isStart => state == GameState.start;
-  bool get isRepeat => state == GameState.repeat;
-  bool get isEnd => state == GameState.end;
 
   void next() {
     if (!isStart) return;
     nextNum++;
     time = (stopwatch.elapsedMilliseconds / 10).round() / 100;
+  }
+
+  saveResult() {
+    if (results[mode] == null) {
+      results[mode] = [];
+    }
+    results[mode]!.add(Result(time: time, date: DateTime.now()));
   }
 }

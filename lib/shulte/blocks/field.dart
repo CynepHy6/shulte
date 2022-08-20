@@ -34,23 +34,15 @@ class _FieldState extends State<Field> {
   }
 
   Widget endScreen() {
-    return Container(
-      width: params.fieldWidth,
-      height: params.fieldHeight,
-      color: params.background,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            '${params.time}',
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 20,
-            ),
-          ),
-          repeatButton(),
-        ],
-      ),
+    return ListView.builder(
+      itemCount: params.results[params.mode]!.length,
+      itemBuilder: (context, index) {
+        final item = params.results[params.mode]![index];
+        return ListTile(
+          title: Text(item.date.toString()),
+          trailing: Text(item.time.toString()),
+        );
+      },
     );
   }
 
