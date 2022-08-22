@@ -53,8 +53,11 @@ class Params {
   }
 
   void end() {
-    state = GameState.end;
+    time = (stopwatch.elapsedMilliseconds / 10).round() / 100;
     saveResult();
+    time = 0;
+    nextNum = 1;
+    state = GameState.end;
   }
 
   void next() {

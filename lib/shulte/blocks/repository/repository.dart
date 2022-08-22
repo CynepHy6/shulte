@@ -1,5 +1,4 @@
 abstract class Repository {
-  final storage = <int, Model>{};
   Model create();
   List<Model> getAll();
   Model get(int id);
@@ -13,6 +12,6 @@ class Model {
   final Map data;
   Model({
     required this.id,
-    required this.data,
+    this.data = const {},
   });
 }
