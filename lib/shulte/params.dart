@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'repositories/in_memory_cache.dart';
+import 'repositories/repository.dart';
 import 'configs/enums.dart';
-import 'result.dart';
 import 'configs/field_size.dart';
 
 class Params {
-  Map<GameMode, List<Result>> results = <GameMode, List<Result>>{};
   final GameMode mode;
   final double blockWidth;
   final double blockHeight;
@@ -17,8 +17,8 @@ class Params {
   late double blockFontSize;
   late int nextNum;
   late GameState state;
-  late double time;
   late Stopwatch stopwatch;
+  Repository repository = InMemoryCache();
 
   Params({
     required this.mode,
@@ -39,11 +39,11 @@ class Params {
   bool get isStart => state == GameState.start;
   bool get isRepeat => state == GameState.repeat;
   bool get isEnd => state == GameState.end;
+  double get time => (stopwatch.elapsedMilliseconds / 10).round() / 100;
 
   void start() {
     state = GameState.start;
     nextNum = 1;
-    time = 0;
     stopwatch.reset();
     stopwatch.start();
     indexes = List.generate(cols * rows, (index) => index + 1);
@@ -53,23 +53,16 @@ class Params {
   }
 
   void end() {
-    time = (stopwatch.elapsedMilliseconds / 10).round() / 100;
-    saveResult();
-    time = 0;
-    nextNum = 1;
     state = GameState.end;
+    next();
   }
 
   void next() {
-    if (!isStart) return;
-    nextNum++;
-    time = (stopwatch.elapsedMilliseconds / 10).round() / 100;
-  }
-
-  saveResult() {
-    if (results[mode] == null) {
-      results[mode] = [];
+    if (isStart) {
+      nextNum++;
     }
-    results[mode]!.add(Result(time: time, date: DateTime.now()));
+    if (isEnd) {
+      nextNum = 1;
+    }
   }
 }

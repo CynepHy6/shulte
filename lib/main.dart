@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:shulte/service_provider.dart';
 import 'shulte/shulte_screen.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(ServiceProvider(child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {

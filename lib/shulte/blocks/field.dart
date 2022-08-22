@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../service_provider.dart';
 import '_.dart';
 import '../params.dart';
 
@@ -34,10 +35,11 @@ class _FieldState extends State<Field> {
   }
 
   Widget endScreen() {
+    final results = ServiceProvider.resultServiceOf(context).getAll(params.mode);
     return ListView.builder(
-      itemCount: params.results[params.mode]!.length,
+      itemCount: results.length,
       itemBuilder: (context, index) {
-        final item = params.results[params.mode]![index];
+        final item = results[index];
         return ListTile(
           title: Text(item.date.toString()),
           trailing: Text(item.time.toString()),
@@ -50,7 +52,7 @@ class _FieldState extends State<Field> {
     return IconButton(
       icon: Icon(Icons.replay_circle_filled_outlined, color: Colors.grey.shade800),
       onPressed: () => setState(() {
-        time = 0;
+        time = params.time;
         nextNum = 1;
         params.start();
       }),
@@ -58,7 +60,7 @@ class _FieldState extends State<Field> {
   }
 
   successTapCallback() => setState(() {
-        time = params.time;
+        time = params.isEnd ? 0 : params.time;
         nextNum = params.nextNum;
       });
 

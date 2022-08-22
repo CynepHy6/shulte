@@ -2,8 +2,8 @@ abstract class Repository {
   Model create();
   List<Model> getAll();
   Model get(int id);
-  void update(Model item);
-  void delete(Model item);
+  void update(Model model);
+  void delete(Model model);
   void clear();
 }
 

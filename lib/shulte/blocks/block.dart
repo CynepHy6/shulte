@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:shulte/service_provider.dart';
 
 import '../params.dart';
 
@@ -32,6 +33,7 @@ class _BlockState extends State<Block> {
 
   @override
   Widget build(BuildContext context) {
+    final service = ServiceProvider.resultServiceOf(context);
     return GestureDetector(
       onTapDown: (context) {
         Timer(
@@ -52,8 +54,10 @@ class _BlockState extends State<Block> {
           background = Colors.green;
           if (idx == params.indexes.length) {
             params.end();
+            service.save(DateTime.now(), params.time, params.mode);
+          } else {
+            params.next();
           }
-          params.next();
           widget.callback();
         });
       },
