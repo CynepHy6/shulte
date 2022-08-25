@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'repositories/in_memory_cache.dart';
-import 'repositories/repository.dart';
 import 'configs/enums.dart';
 import 'configs/field_size.dart';
 
@@ -18,7 +16,6 @@ class Params {
   late int nextNum;
   late GameState state;
   late Stopwatch stopwatch;
-  Repository repository = InMemoryCache();
 
   Params({
     required this.mode,

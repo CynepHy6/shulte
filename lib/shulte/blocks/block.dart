@@ -33,7 +33,7 @@ class _BlockState extends State<Block> {
 
   @override
   Widget build(BuildContext context) {
-    final service = ServiceProvider.resultServiceOf(context);
+    final service = ServiceProvider.of(context).resultService;
     return GestureDetector(
       onTapDown: (context) {
         Timer(

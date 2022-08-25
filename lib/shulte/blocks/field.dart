@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../service_provider.dart';
+import '../result.dart';
 import '_.dart';
 import '../params.dart';
 
@@ -19,6 +20,7 @@ class _FieldState extends State<Field> {
   Params get params => widget.params;
   double time = 0;
   int nextNum = 1;
+  List<Result> results = [];
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +37,7 @@ class _FieldState extends State<Field> {
   }
 
   Widget endScreen() {
-    final results = ServiceProvider.resultServiceOf(context).getAll(params.mode);
+    getResults();
     return ListView.builder(
       itemCount: results.length,
       itemBuilder: (context, index) {
@@ -91,5 +93,14 @@ class _FieldState extends State<Field> {
         ],
       ),
     );
+  }
+
+  void getResults() async {
+    final items = await ServiceProvider.of(context).resultService.getAll(params.mode);
+    if (items.length != results.length) {
+      setState(() {
+        results = items.reversed.toList();
+      });
+    }
   }
 }

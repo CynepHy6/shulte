@@ -3,6 +3,7 @@ import 'package:shulte/service_provider.dart';
 import 'shulte/shulte_screen.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(ServiceProvider(child: const MyApp()));
 }
 

@@ -8,7 +8,7 @@ class ServiceProvider extends InheritedWidget {
   @override
   bool updateShouldNotify(covariant InheritedWidget oldWidget) => false;
 
-  static ResultService resultServiceOf(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<ServiceProvider>()!.resultService;
+  static ServiceProvider of(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<ServiceProvider>()!;
   }
 }

@@ -1,14 +1,15 @@
 import '../repositories/repository.dart';
 
-class InMemoryCache implements Repository {
-  final storage = <int, Model>{};
+@Deprecated('not used')
+class InFile implements Repository {
+  final storage = <String, Model>{};
 
   @override
   Model create() {
     final ids = storage.keys.toList()..sort();
-    final id = ids.isEmpty ? 1 : ids.last + 1;
-    final model = Model(id: id);
-    storage[id] = model;
+    final id = ids.isEmpty ? 1 : int.parse(ids.last) + 1;
+    final model = Model(id: '$id');
+    storage['$id'] = model;
     return model;
   }
 
@@ -18,7 +19,7 @@ class InMemoryCache implements Repository {
   }
 
   @override
-  Model get(int id) {
+  Model get(String id) {
     return storage[id]!;
   }
 

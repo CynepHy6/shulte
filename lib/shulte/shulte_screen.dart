@@ -3,7 +3,7 @@ import 'blocks/_.dart';
 import 'configs/enums.dart';
 import 'params.dart';
 
-const defaultMode = GameMode.debug;
+const defaultMode = GameMode.x5;
 
 class ShulteScreen extends StatefulWidget {
   const ShulteScreen({Key? key}) : super(key: key);

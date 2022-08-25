@@ -2,7 +2,7 @@ import 'configs/enums.dart';
 import 'repositories/repository.dart';
 
 class Result {
-  final int id;
+  final String id;
   final double time;
   final DateTime date;
   final GameMode mode;
@@ -14,13 +14,13 @@ class Result {
   });
   Result.fromModel(Model model)
       : id = model.id,
-        time = model.data['time'],
-        date = model.data['date'],
-        mode = model.data['mode'];
+        time = model.data['time']?.toDouble() ?? 0.0,
+        date = DateTime.fromMillisecondsSinceEpoch(model.data['date']),
+        mode = GameMode.fromString(model.data['mode']) ?? GameMode.debug;
 
   Model toModel() => Model(id: id, data: {
         'time': time,
-        'date': date,
-        'mode': mode,
+        'date': date.millisecondsSinceEpoch,
+        'mode': mode.toString(),
       });
 }

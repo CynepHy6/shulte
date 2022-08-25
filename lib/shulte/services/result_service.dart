@@ -1,20 +1,25 @@
+import 'package:shulte/shulte/repositories/in_local_storage.dart';
+
 import '../configs/enums.dart';
-import '../repositories/in_memory_cache.dart';
 import '../result.dart';
 
 class ResultService {
-  final repository = InMemoryCache();
+  final repository = InLocalStorage();
 
   save(DateTime date, double time, GameMode mode) {
     final model = repository.create();
-    repository.update(Result(id: model.id, date: date, time: time, mode: mode).toModel());
+    repository.update(Result(
+      id: model.id.toString(),
+      date: date,
+      time: time,
+      mode: mode,
+    ).toModel());
   }
 
-  List<Result> getAll(GameMode mode) {
-    return repository
-        .getAll()
-        .where((item) => item.data['mode'] == mode)
-        .map((item) => Result.fromModel(item))
-        .toList();
+  Future<List<Result>> getAll(GameMode mode) async {
+    final results = await repository.getAll() ?? [];
+    final filtered = results.map((item) => Result.fromModel(item)).where((model) => model.mode == mode).toList();
+
+    return filtered;
   }
 }
