@@ -1,15 +1,5 @@
 import 'dart:convert';
 
-@Deprecated('not used')
-abstract class Repository {
-  Model create();
-  List<Model> getAll();
-  Model get(String id);
-  void update(Model model);
-  void delete(Model model);
-  void clear();
-}
-
 class Model {
   final String id;
   final Map data;

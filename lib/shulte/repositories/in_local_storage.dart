@@ -1,5 +1,5 @@
 import 'package:localstore/localstore.dart';
-import '../repositories/repository.dart';
+import 'model.dart';
 
 const collectionName = 'results';
 

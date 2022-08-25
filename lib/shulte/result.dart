@@ -1,5 +1,5 @@
 import 'configs/enums.dart';
-import 'repositories/repository.dart';
+import 'repositories/model.dart';
 
 class Result {
   final String id;
