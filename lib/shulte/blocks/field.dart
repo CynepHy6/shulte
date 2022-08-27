@@ -22,7 +22,6 @@ class _FieldState extends State<Field> {
   double time = 0;
   int nextNum = 1;
   List<Result> results = [];
-  Result? lastResult;
   Result? bestResult;
 
   @override
@@ -59,17 +58,18 @@ class _FieldState extends State<Field> {
               ),
               useStickyGroupSeparators: true,
               elements: results,
+              groupComparator: (String g1, String g2) => g2.compareTo(g1),
               groupBy: (Result item) => item.group,
               padding: const EdgeInsets.symmetric(horizontal: 10),
-              itemComparator: (Result item1, Result item2) => item1.time.compareTo(item2.time),
+              itemComparator: (Result item1, Result item2) => item2.date.compareTo(item1.date),
               indexedItemBuilder: (context, Result item, index) {
-                final rowStyle = item.date == lastResult?.date ? const TextStyle(fontWeight: FontWeight.bold) : null;
+                final rowStyle = item.date == bestResult?.date ? const TextStyle(fontWeight: FontWeight.bold) : null;
                 return ListTile(
                   visualDensity: const VisualDensity(vertical: VisualDensity.minimumDensity),
                   leading: Text('${index + 1}'),
                   title: Text(item.datePretty, style: rowStyle),
                   trailing: Text(item.time.toString(), style: rowStyle),
-                  selected: item.date == lastResult?.date,
+                  selected: item.date == bestResult?.date,
                 );
               },
             ),
@@ -129,7 +129,6 @@ class _FieldState extends State<Field> {
     if (items.length != results.length) {
       setState(() {
         results = items;
-        lastResult = items.last;
         items.sort((r1, r2) => r1.time.compareTo(r2.time));
         bestResult = items.first;
       });
