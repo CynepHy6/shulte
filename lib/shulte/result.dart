@@ -1,5 +1,6 @@
 import 'configs/enums.dart';
 import 'repositories/model.dart';
+import 'package:intl/intl.dart';
 
 class Result {
   final String id;
@@ -23,4 +24,8 @@ class Result {
         'date': date.millisecondsSinceEpoch,
         'mode': mode.toString(),
       });
+
+  String get datePretty => DateFormat('kk:mm:ss').format(date);
+
+  String get group => DateFormat('yyyy-MM-dd').format(date);
 }
