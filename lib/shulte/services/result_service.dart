@@ -3,6 +3,7 @@ import 'package:shulte/shulte/repositories/in_local_storage.dart';
 import '../configs/enums.dart';
 import '../result.dart';
 
+// TODO сделать хранение в БД?
 class ResultService {
   final repository = InLocalStorage();
 
