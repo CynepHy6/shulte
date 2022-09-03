@@ -26,7 +26,7 @@ class _FieldState extends State<Field> {
 
   @override
   Widget build(BuildContext context) {
-    startGame(params);
+    startGame();
 
     return Stack(children: [
       if (params.isEnd) resultsScreen(),
@@ -34,8 +34,8 @@ class _FieldState extends State<Field> {
     ]);
   }
 
-  void startGame(Params field) {
-    if (field.isRepeat) field.start();
+  void startGame() {
+    if (params.isRepeat) params.start();
   }
 
   Widget resultsScreen() {
@@ -66,7 +66,6 @@ class _FieldState extends State<Field> {
                 final rowStyle = item.date == bestResult?.date ? const TextStyle(fontWeight: FontWeight.bold) : null;
                 return ListTile(
                   visualDensity: const VisualDensity(vertical: VisualDensity.minimumDensity),
-                  leading: Text('${index + 1}'),
                   title: Text(item.datePretty, style: rowStyle),
                   trailing: Text(item.time.toString(), style: rowStyle),
                   selected: item.date == bestResult?.date,

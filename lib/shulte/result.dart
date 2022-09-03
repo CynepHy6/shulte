@@ -25,7 +25,7 @@ class Result {
         'mode': mode.toString(),
       });
 
-  String get datePretty => DateFormat('kk:mm:ss').format(date);
+  String get datePretty => DateFormat('H:mm:ss').format(date);
 
   String get group => DateFormat('yyyy-MM-dd').format(date);
 }
